@@ -9,7 +9,7 @@ pipeline{
         }
         stage("scanner"){
             steps {
-                sh "/opt/sonar-scanner/bin/sonar-scanner -X -Dproject.settings=sonar-project.properties"
+                sh "/opt/sonar-scanner-4.6.0.2311-linux/bin/sonar-scanner -X -Dproject.settings=sonar-project.properties"
             }
         }
     }
