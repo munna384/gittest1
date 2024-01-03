@@ -7,5 +7,10 @@ pipeline{
                 
             }
         }
+        stage("scanner"){
+            steps {
+                sh "/opt/sonar-scanner/bin/sonar-scanner -X -Dproject.settings=sonar-project.properties"
+            }
+        }
     }
 }
