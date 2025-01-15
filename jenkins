@@ -1,0 +1,55 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('System Information') {
+            steps {
+                echo "=== Checking System Info ==="
+                sh '''
+                    echo "Hostname: $(hostname)"
+                    echo "OS Details:"
+                    cat /etc/os-release
+                '''
+            }
+        }
+        
+        stage('Service Status') {
+            steps {
+                echo "=== Checking Services ==="
+                sh '''
+                    echo "Jenkins Status:"
+                    systemctl status jenkins | grep Active
+                    
+                    echo "\\nApache Status:"
+                    if systemctl is-active httpd >/dev/null 2>&1; then
+                        echo "Apache is running"
+                    else
+                        echo "Apache is not running"
+                    fi
+                '''
+            }
+        }
+        
+        stage('Version Check') {
+            steps {
+                echo "=== Checking Versions ==="
+                sh '''
+                    echo "Java Version:"
+                    java -version 2>&1
+                    
+                    echo "\\nJenkins Version:"
+                    echo $JENKINS_VERSION
+                '''
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Pipeline completed successfully'
+        }
+        failure {
+            echo 'Pipeline failed'
+        }
+    }
+}
