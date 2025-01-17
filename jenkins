@@ -42,6 +42,22 @@ pipeline {
                 '''
             }
         }
+        
+        stage('Check /tmp Space') {
+            steps {
+                echo "=== Checking /tmp Directory Space ==="
+                sh '''
+                    echo "TMP Directory Space Usage:"
+                    df -h /tmp
+                    
+                    echo "\\nTMP Directory Contents:"
+                    ls -lh /tmp | sort -k5 -hr | head -n 5
+                    
+                    echo "\\nTotal Size of /tmp:"
+                    du -sh /tmp
+                '''
+            }
+        }
     }
     
     post {
