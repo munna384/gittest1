@@ -50,11 +50,11 @@ pipeline {
                     echo "TMP Directory Space Usage:"
                     df -h /tmp
                     
-                    echo "\\nTMP Directory Contents:"
-                    ls -lh /tmp | sort -k5 -hr | head -n 5
+                    echo "\\nTMP Directory Contents (excluding system directories):"
+                    ls -lh /tmp | grep -v "systemd-private" | sort -k5 -hr | head -n 5
                     
-                    echo "\\nTotal Size of /tmp:"
-                    du -sh /tmp
+                    echo "\\nTotal Size of accessible /tmp contents:"
+                    du -sh /tmp/* 2>/dev/null || echo "No accessible files in /tmp"
                 '''
             }
         }
